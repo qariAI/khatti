@@ -70,6 +70,7 @@ function spLoad(){try{const v=JSON.parse(localStorage.getItem(SP_KEY));if(v&&v.v
 let spS=null;const spGet=()=>spS||(spS=spLoad());
 function spSave(){try{localStorage.setItem(SP_KEY,JSON.stringify(spS));}catch{}}
 const spIt=id=>spGet().items[id]||{best:0,stars:0,attempts:0,seal:false,done:false,last:0};
+const spCoreGap=after=>{if(spGet().unlocked[2])return null;const core=SP_TIERS[0].items.filter(i=>!i.extra),k=after?core.findIndex(i=>i.id===after):-1;for(let j=1;j<=core.length;j++){const c=core[(k+j)%core.length];if(c.id!==after&&spIt(c.id).best<SP_UNLOCK)return c;}return null;};
 const spAvg=n=>{const t=SP_TIERS[n-1],core=t.items.filter(i=>!i.extra);return Math.round(core.reduce((a,i)=>a+spIt(i.id).best,0)/core.length);};
 const spStarsOf=s=>SP_STAR.filter(v=>s>=v).length;
 function spRefreshUnlocks(){const s=spGet();for(let n=2;n<=4;n++)if(!s.unlocked[n]&&spAvg(n-1)>=SP_UNLOCK)s.unlocked[n]=true;}
@@ -120,13 +121,13 @@ let spMap=null;
 const spEsc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const spStarsHtml=n=>'<span class="sp-stars" aria-label="'+n+' of 3 stars">'+[0,1,2].map(i=>'<i class="'+(i<n?'on':'')+'">★</i>').join('')+'</span>';
 function spMapHtml(){spRefreshUnlocks();const s=spGet();
- return '<div class="sp-scroll"><nav class="sp-topbar"><button type="button" data-sp-nav="home">← Home</button><button type="button" data-sp-nav="work">My work</button></nav><header class="sp-title"><span lang="ar" dir="rtl">طريق الخطاط</span><h2>The Scribe’s Path</h2><p>Four tiers from single letters to full ayahs. Reach an average of '+SP_UNLOCK+'% in a tier to open the next.</p></header>'+
+ return '<div class="sp-scroll"><nav class="sp-topbar"><button type="button" data-sp-nav="home">← Home</button><button type="button" data-sp-nav="work">My work</button></nav><header class="sp-title"><span lang="ar" dir="rtl">طريق الخطاط</span><h2>The Scribe’s Path</h2><p>Four tiers from single letters to full ayahs. Reach an average of '+SP_UNLOCK+'% in a tier to open the next (in Tier 1, the first 8 letters).</p></header>'+
  SP_TIERS.map(t=>{const open=spOpen(t.n),avg=spAvg(t.n),stars=t.items.reduce((a,i)=>a+spIt(i.id).stars,0),max=t.items.length*3,prev=t.n>1?spAvg(t.n-1):0;
   return '<section class="sp-tier'+(open?'':' locked')+'" data-tier="'+t.n+'" aria-label="Tier '+t.n+' '+t.en+'"><div class="sp-tcard"><div class="sp-tn" lang="ar" dir="rtl">'+t.ar+'</div><div><h3>Tier '+t.n+' · '+t.en+'</h3><p>'+t.sub+'</p></div><div class="sp-tstat"><span>'+(open?avg+'% avg':'🔒')+'</span><span>★ '+stars+'/'+max+'</span></div>'+
   '<div class="sp-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+(open?avg:0)+'"><i style="width:'+(open?avg:0)+'%"></i><b style="left:'+SP_UNLOCK+'%"></b></div>'+
-  (open?'':'<p class="sp-hint">Locked · reach '+SP_UNLOCK+'% average in '+SP_TIERS[t.n-2].en+' (now '+prev+'%).</p>')+'</div>'+
+  (open?'':'<p class="sp-hint">Locked · reach '+SP_UNLOCK+'% average in '+SP_TIERS[t.n-2].en+(t.n===2?' (first 8 letters)':'')+' (now '+prev+'%).</p>')+'</div>'+
   '<ol class="sp-trail">'+(t.n===2?'<li class="sp-node sp-lesson'+(spJoinsDone()?' done':'')+'"><span class="sp-mark" aria-hidden="true">'+(spJoinsDone()?'<em class="sp-seal gold">خط</em>':'<em class="sp-dot"></em>')+'</span><button type="button" class="sp-quote" data-sp-joins '+(open?'':'disabled aria-disabled="true"')+'><span class="sp-ar" lang="ar" dir="rtl">بـ ـسـ ـم</span><span class="sp-en">Joins · Build بسم from its three joining forms</span><span class="sp-row"><span class="sp-best">'+(spJoinsDone()?'✓ Done · practise again':'Start here · lesson')+'</span></span></button></li>':'')+t.items.map((it,k)=>{const st=spIt(it.id),law=s.lawha[it.id];
-   return (it.extra&&!t.items[k-1].extra?'<li class="sp-sep" role="presentation">The full alphabet</li>':'')+'<li class="sp-node'+(st.done?' done':'')+(k%2?' alt':'')+'"><span class="sp-mark" aria-hidden="true">'+(st.done?'<em class="sp-seal'+(st.stars===3?' gold':'')+'">خط</em>':open?'<em class="sp-dot"></em>':'<em class="sp-lock">🔒</em>')+'</span>'+
+   return (it.extra&&!t.items[k-1].extra?'<li class="sp-sep" role="presentation"><span>The full alphabet<small>Practice only · not needed to unlock Tier 2</small></span></li>':'')+'<li class="sp-node'+(st.done?' done':'')+(k%2?' alt':'')+'"><span class="sp-mark" aria-hidden="true">'+(st.done?'<em class="sp-seal'+(st.stars===3?' gold':'')+'">خط</em>':open?'<em class="sp-dot"></em>':'<em class="sp-lock">🔒</em>')+'</span>'+
    '<button type="button" class="sp-quote" data-sp-item="'+it.id+'" '+(open?'':'disabled aria-disabled="true"')+'><span class="sp-ar" lang="ar" dir="rtl">'+spEsc(it.text)+'</span><span class="sp-en">'+spEsc(it.name)+(it.tier>1?' · '+spEsc(it.meaning):'')+'</span><span class="sp-row">'+spStarsHtml(st.stars)+(st.seal?'<span class="sp-ms" title="Memory Seal: written from memory">ختم الذاكرة</span>':'')+(st.best?'<span class="sp-best">'+st.best+'%</span>':'')+'</span></button>'+
    (law?'<button type="button" class="sp-lawha-btn" data-sp-plate="'+it.id+'">Lawha ✦</button>':'')+'</li>';}).join('')+'</ol></section>';}).join('')+'</div>';}
 function spShowMap(){spTrack('path_open');spHist('path');
@@ -139,7 +140,7 @@ const spRefresh=()=>{if(spMap&&!spMap.hidden){const y=spMap.querySelector('.sp-s
 
 /* ---------- practice ---------- */
 let spP=null;
-window.khattiNext=()=>{let started=false,next=null;for(const t of SP_TIERS){if(!spOpen(t.n))continue;for(const it of t.items){const st=spIt(it.id);if(st.attempts>0)started=true;if(!next&&!st.done)next=it;}}return{started,id:next&&next.id,name:next&&next.name};};
+window.khattiNext=()=>{let started=false,next=spCoreGap();for(const t of SP_TIERS){if(!spOpen(t.n))continue;for(const it of t.items){const st=spIt(it.id);if(st.attempts>0)started=true;if(!next&&!st.done)next=it;}}return{started,id:next&&next.id,name:next&&next.name};};
 document.addEventListener('click',e=>{const b=e.target.closest('[data-path-continue]');if(!b)return;e.preventDefault();spTrack('path_continue');spPractice(b.dataset.pathContinue);});
 function spPractice(id){
  const item=spItem(id);if(!item||!spOpen(item.tier))return;spFont(item.text).then(()=>spPracticeRun(item));}
@@ -179,7 +180,7 @@ function spPracticeRun(item){
   if(item.tier===4&&r.acc>=SP_LAWHA){const prev=s.lawha[item.id];if(!prev||r.acc>=prev.score)s.lawha[item.id]={score:r.acc,date:new Date().toISOString().slice(0,10),theme:prev?.theme||'parchment',ink:prev?.ink||'ink',nib:Math.round(nib),strokes:spPack(strokes)};spTrack('lawha_claimed');}
   const wasLocked=[2,3,4].filter(n=>!s.unlocked[n]);spRefreshUnlocks();const opened=wasLocked.filter(n=>s.unlocked[n]);spSave();if(xp)spAward('path-'+item.id,xp);
   res={r,stars,sealNow,opened,xp,recall};showResult();spRefresh();drawGhost();}
- function showResult(){const{r,stars,sealNow,opened,xp}=res,P=$('.sp-result'),next=SP_ALL[SP_ALL.indexOf(item)+1],nx=next&&spOpen(next.tier)?next:null,law=item.tier===4&&r.acc>=SP_LAWHA;
+ function showResult(){const{r,stars,sealNow,opened,xp}=res,P=$('.sp-result'),next=(item.tier===1&&spCoreGap(item.id))||SP_ALL[SP_ALL.indexOf(item)+1],nx=next&&spOpen(next.tier)?next:null,law=item.tier===4&&r.acc>=SP_LAWHA;
   P.hidden=false;P.innerHTML='<div class="sp-card" role="status">'+(stars>=1?'<div class="sp-stamp'+(stars===3?' gold':'')+'" aria-hidden="true">خط</div>':'')+'<div class="sp-pct">'+r.acc+'<small>%</small></div>'+spStarsHtml(stars)+
   '<p class="sp-detail">Coverage '+r.cov+'% · Precision '+r.prec+'% · Proportion '+r.prop+'%'+(r.ang!==null?' · Angle '+r.ang+'%':'')+'</p>'+
   (stars===0?'<p class="sp-msg">Not yet — trace the guide slowly and keep the whole shape in view.</p>':'')+
@@ -197,7 +198,7 @@ function spPracticeRun(item){
   if(k==='close'){close();spHistBack('practice');}else if(k==='undo'){strokes.pop();drawInk();}else if(k==='clear'){strokes=[];drawInk();}
   else if(k==='peek'){peek=!peek;if(peek)peeked=true;b.setAttribute('aria-pressed',String(peek));drawGhost();}
   else if(k==='check')check();else if(k==='retry')reset();
-  else if(k==='next'){const n=SP_ALL[SP_ALL.indexOf(item)+1];close();if(n)spPractice(n.id);}
+  else if(k==='next'){const n=(item.tier===1&&spCoreGap(item.id))||SP_ALL[SP_ALL.indexOf(item)+1];close();if(n)spPractice(n.id);}
   else if(k==='lawha'){close();spPlate(item.id);}});
  spHist('practice');spP={close,item,get strokes(){return strokes;},set strokes(v){strokes=v;drawInk();},check};
  drawBg();drawGhost();drawInk();ov.querySelector('.go').focus({preventScroll:true});}

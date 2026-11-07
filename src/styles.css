@@ -1117,3 +1117,5 @@ body.reduce-motion #khatti-intro *,body.reduce-motion #khatti-intro{animation-du
 .wk-device .textbtn{font-size:.78rem;color:#6a5328;text-decoration:underline;text-underline-offset:3px;background:none;border:0;cursor:pointer}
 html.is-app [data-pwa-options]{display:none!important}
 .wk-device a.textbtn{font-size:.78rem;color:#6a5328;text-decoration:underline;text-underline-offset:3px}
+#scribe-path .sp-sep>span{text-align:center}
+#scribe-path .sp-sep small{display:block;margin-top:4px;font:italic .82rem Georgia,serif;letter-spacing:0;text-transform:none;color:#6a5328}

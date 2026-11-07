@@ -1,12 +1,12 @@
 {
   "name": "harf-writer-standalone",
-  "version": "6.51.0",
+  "version": "6.52.0",
   "private": true,
   "type": "module",
   "scripts": {
     "test": "node scripts/test.mjs",
     "build": "node scripts/build.mjs",
     "start": "node scripts/serve.mjs",
-    "test:ui": "node tests/tutorial.cjs && node tests/path.cjs && node tests/path-calibration.cjs && node tests/home-no-trace.cjs && node tests/welcome.cjs && node tests/intro.cjs && node tests/no-duplicates.cjs && node tests/my-work-nav.cjs && node tests/engagement.cjs && node tests/pwa-package.cjs && node tests/exhibition-design.cjs && node tests/immersive-browser.cjs && node tests/canvas-families.cjs && node tests/canvas-reliability.cjs && node tests/chapter3.cjs && node tests/connected-resilience.cjs && node tests/design-v615.cjs && node tests/local-launch.cjs && node tests/loop-font.cjs && node tests/loop.cjs && node tests/ux-entry.cjs && node tests/ux-v614.cjs && node tests/ux-v6141.cjs && node tests/dom-ids.cjs"
+    "test:ui": "node tests/tutorial.cjs && node tests/path.cjs && node tests/path-unlock.cjs && node tests/path-calibration.cjs && node tests/home-no-trace.cjs && node tests/welcome.cjs && node tests/intro.cjs && node tests/no-duplicates.cjs && node tests/my-work-nav.cjs && node tests/engagement.cjs && node tests/pwa-package.cjs && node tests/exhibition-design.cjs && node tests/immersive-browser.cjs && node tests/canvas-families.cjs && node tests/canvas-reliability.cjs && node tests/chapter3.cjs && node tests/connected-resilience.cjs && node tests/design-v615.cjs && node tests/local-launch.cjs && node tests/loop-font.cjs && node tests/loop.cjs && node tests/ux-entry.cjs && node tests/ux-v614.cjs && node tests/ux-v6141.cjs && node tests/dom-ids.cjs"
   }
 }
