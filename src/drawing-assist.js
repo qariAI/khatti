@@ -1,0 +1,3 @@
+/** Optional geometric drawing aids; no script-quality or classical proportion judgment. */
+export function assistNamePoint(point,anchor,{baseline,snap=false,angle=45,lock=false}={}){let p=point.slice();if(lock&&anchor){const dx=p[0]-anchor[0],dy=p[1]-anchor[1],a=angle*Math.PI/180,candidates=[a,-a,Math.PI-a,Math.PI+a],best=candidates.map(t=>{const u=[Math.cos(t),Math.sin(t)],d=dx*u[0]+dy*u[1];return{p:[anchor[0]+u[0]*d,anchor[1]+u[1]*d],error:Math.abs(dx*u[1]-dy*u[0])};}).sort((a,b)=>a.error-b.error)[0];p=best.p;}if(snap&&Number.isFinite(baseline)&&Math.abs(p[1]-baseline)<=8)p[1]=baseline;return p.map(n=>Math.round(Math.max(-2000,Math.min(16000,n))*2)/2);}
+export function strokeDirection(a,b){return Math.round((Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI+180)%180);}

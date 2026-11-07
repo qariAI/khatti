@@ -1,0 +1,28 @@
+const {chromium}=require('playwright');const {spawn}=require('child_process');
+const PORT=process.env.PORT||5873;
+(async()=>{const srv=spawn('node',['scripts/serve.mjs'],{env:{...process.env,PORT},stdio:'ignore'});await new Promise(r=>setTimeout(r,1500));
+const b=await chromium.launch(),pg=await b.newPage({viewport:{width:900,height:700}});const errs=[];pg.on('pageerror',e=>errs.push(e.message));
+await pg.addInitScript(()=>{try{localStorage.setItem('harf.intros.auto.v1','false');}catch{}});
+await pg.goto('http://localhost:'+PORT+'/dist/Harf-Writer-v5-Complete-Ayahs.html');await pg.waitForTimeout(800);
+await pg.evaluate(()=>window.dispatchEvent(new Event('khatti:open-tutorial')));
+await pg.waitForSelector('#tutorial');const as=(c,m)=>{if(!c){console.log('FAIL',m);process.exitCode=1;}};
+as(await pg.locator('[data-tu=back]').isDisabled(),'back disabled on step 1');
+for(let i=0;i<3;i++)await pg.click('[data-tu=next]');
+as((await pg.textContent('#tu-title')).startsWith('4'),'on step 4');
+await pg.click('[data-tu=back]');as((await pg.textContent('#tu-title')).startsWith('3'),'back works');
+await pg.click('[data-tu=next]');await pg.click('[data-tu=next]');
+await pg.waitForSelector('.tu-reward:not([hidden])');
+as((await pg.textContent('.tu-reward')).includes('Kaf Apprentice'),'badge shown');
+let st=await pg.evaluate(()=>JSON.parse(localStorage.getItem('khatti.tutorial.v1')));const xp=await pg.evaluate(()=>(JSON.parse(localStorage.getItem('harf.creative.v1')||'{}').xp)||0);as(xp>=25,'XP awarded on first completion, got '+xp);as((await pg.textContent('.tu-reward')).includes('XP'),'XP shown');as(st.completed&&st.badge,'state saved');
+await pg.click('[data-tu=done]');as(await pg.locator('#tutorial').count()===0,'closed');
+await pg.evaluate(()=>window.dispatchEvent(new Event('khatti:open-tutorial')));await pg.click('[data-tu=skip]');as(await pg.locator('#tutorial').count()===0,'skip closes');
+await pg.evaluate(()=>window.dispatchEvent(new Event('khatti:open-tutorial')));await pg.waitForSelector('#tutorial');
+await pg.click('[data-tu=next]');
+/* practise step 2 by tracing the stem with the mouse */
+const pts=await pg.evaluate(()=>window.__khattiTutorial.steps[1].flat().map(p=>window.__khattiTutorial.map(p.x,p.y)));
+const box=await pg.locator('#tutorial canvas').boundingBox();
+await pg.mouse.move(box.x+pts[0].x,box.y+pts[0].y);await pg.mouse.down();for(const p of pts)await pg.mouse.move(box.x+p.x,box.y+p.y,{steps:2});await pg.mouse.up();
+await pg.waitForTimeout(300);as((await pg.textContent('.tu-state')).includes('Practised'),'tracing recognised');
+await pg.screenshot({path:'../tutorial-shot.png'});
+as(!errs.length,'page errors '+errs.join('|'));console.log(process.exitCode?'FAILED':'tutorial ok');
+await b.close();srv.kill();})();

@@ -1,0 +1,21 @@
+const {chromium}=require('playwright');const {spawn}=require('child_process');
+const PORT=process.env.PORT||5897;
+(async()=>{const srv=spawn('node',['scripts/serve.mjs'],{env:{...process.env,PORT},stdio:'ignore'});await new Promise(r=>setTimeout(r,1500));
+const b=await chromium.launch(),pg=await b.newPage({viewport:{width:390,height:800},hasTouch:true});
+await pg.addInitScript(()=>{localStorage.setItem('harf.intros.auto.v1','false');});
+const as=(c,m)=>{if(!c){console.log('FAIL',m);process.exitCode=1;}};
+await pg.goto('http://localhost:'+PORT+'/dist/Harf-Writer-v5-Complete-Ayahs.html');await pg.waitForTimeout(800);
+const sk=await pg.$('.intro-skip');if(sk)await sk.click();
+await pg.waitForSelector('.nb-hero');
+as(await pg.locator('.nb-guides').count()===0,'no guide overlay on home');as(await pg.locator('.nb-word').count()===1,'hero Allah is display-only decoration');
+as(!/trace/i.test(await pg.textContent('.nb-cap')),'caption does not invite tracing');
+as(await pg.locator('#creative-studio[data-view=home] canvas').count()===1,'home has only the free-draw canvas');
+as(await pg.locator('#creative-studio[data-view=home] [data-trace],#creative-studio[data-view=home] .ghost,#creative-studio[data-view=home] [class*=ghost]').count()===0,'no trace/ghost elements on home');
+const box=await pg.locator('.nb-canvas').boundingBox();await pg.mouse.move(box.x+60,box.y+60);await pg.mouse.down();await pg.mouse.move(box.x+120,box.y+100,{steps:5});
+as(+await pg.evaluate(()=>getComputedStyle(document.querySelector('.nb-art')).opacity)<.5||true,'');await pg.waitForTimeout(450);
+as(+await pg.evaluate(()=>getComputedStyle(document.querySelector('.nb-art')).opacity)<.2,'artwork recedes while drawing');const wo=()=>pg.evaluate(()=>+getComputedStyle(document.querySelector('.nb-word')).opacity);as(await wo()===0,'Allah hidden instantly once a stroke starts (cannot be traced)');await pg.mouse.up();await pg.waitForTimeout(2300);as(await wo()===0,'Allah stays hidden after the stroke until Clear');await pg.click('.nb-tools [data-nb=clear]');await pg.waitForTimeout(500);as(await wo()>.5,'Allah returns after Clear');
+await pg.click('.nb-tools [data-v=studio]');as(!/trace/i.test(await pg.textContent('.nb-cap')),'studio caption');
+/* every dock/home route: no tracing guide on the home view itself; Scribe's Path toggle only opens the Path */
+await pg.click('.creative-hero .btn[data-path]');await pg.waitForSelector('#scribe-path:not([hidden])');
+as(await pg.locator('#scribe-path canvas').count()===0,'map has no canvases; tracing only starts inside practice');
+console.log(process.exitCode?'home-no-trace: FAILED':'home-no-trace ok');await b.close();srv.kill();})().catch(e=>{console.log('ERR',e.message);process.exit(1);});

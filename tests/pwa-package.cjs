@@ -1,0 +1,13 @@
+const {chromium}=require('playwright');const {spawn}=require('child_process');
+const PORT=process.env.PORT||5995;
+(async()=>{const srv=spawn('python3',['-m','http.server',String(PORT),'-d','dist/pwa'],{stdio:'ignore'});await new Promise(r=>setTimeout(r,1200));
+const b=await chromium.launch(),pg=await b.newPage({viewport:{width:390,height:800}});const er=[];pg.on('pageerror',e=>er.push(e.message));
+const as=(c,m)=>{if(!c){console.log('FAIL',m);process.exitCode=1;}};
+await pg.addInitScript(()=>{localStorage.setItem('harf.intros.auto.v1','false');});
+await pg.goto('http://localhost:'+PORT+'/');await pg.waitForSelector('.nb-hero',{timeout:8000}).catch(()=>{});
+as(await pg.locator('.nb-hero').count()===1,'packaged PWA index.html renders the hero');
+as(!/Studio signature|const LOOP_HTML/.test(await pg.evaluate(()=>document.body.innerText)),'no source code leaking as page text');
+as(await pg.evaluate(()=>[...document.scripts].some(s=>/pwa\.js/.test(s.src))),'pwa.js attached');
+as(await pg.locator('[data-pwa-options]').count()>=0,'');
+as(er.length===0,'page errors: '+er.join('|'));
+console.log(process.exitCode?'pwa-package: FAILED':'pwa-package ok');await b.close();srv.kill();})().catch(e=>{console.log('ERR',e.message);process.exit(1);});

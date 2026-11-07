@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1d19">
+<title>Khatti Loop</title>
+<style>
+:root{
+  --bg1:#0f3a33;--bg2:#0a1714;--cell:#ffffff08;--cell-line:#ffffff0d;
+  --parch:#e9dcc0;--parch-dim:#a99c80;--gold:#e6c26a;--ink:#f4ead2;--muted:#8fa79d;
+  --btn:#ffffff0f;--btn-line:#ffffff1f;--ease:cubic-bezier(.3,.9,.3,1.15);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:radial-gradient(120% 90% at 50% 20%,var(--bg1),var(--bg2) 70%) fixed;color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column;overflow:hidden;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);user-select:none;-webkit-user-select:none}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px 6px}
+.brand{display:flex;align-items:baseline;gap:10px;color:var(--muted);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.brand .ar{font-size:22px;letter-spacing:0;text-transform:none;color:var(--gold);font-family:"Amiri","Scheherazade New","Noto Naskh Arabic",serif}
+.lvl{font-size:15px;color:var(--parch);font-variant-numeric:tabular-nums}
+.icon-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--btn-line);background:var(--btn);color:var(--parch);display:grid;place-items:center;cursor:pointer;padding:0}
+.icon-btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.icon-btn[aria-pressed=false]{color:var(--muted)}
+.icon-btn:focus-visible,.pill:focus-visible,#board:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+main{flex:1;min-height:0;display:grid;place-items:center;padding:6px 14px}
+#board{width:100%;height:100%;display:block;touch-action:manipulation;transition:opacity .28s ease,transform .28s ease;border-radius:18px}
+#board.out{opacity:0;transform:scale(.96)}
+.cell{fill:var(--cell);stroke:var(--cell-line);stroke-width:1.5}
+.rot{transform-origin:50px 50px;transition:transform .24s var(--ease)}
+.ink{fill:none;stroke-linecap:round;stroke-linejoin:round;transition:opacity .45s ease}
+.ink.parch{stroke:url(#gP);stroke-width:9;opacity:.9}
+.ink.gold{stroke:url(#gG);stroke-width:9;opacity:0}
+.ink.glow{stroke:var(--gold);stroke-width:20;opacity:0;stroke-linecap:butt}
+.ink.hl{stroke:#fff6d4;stroke-width:2.4;opacity:0;stroke-linecap:butt}
+.dia.parch{fill:url(#gP);stroke:none;opacity:.9;transition:opacity .45s}
+.dia.gold{fill:url(#gG);stroke:none;opacity:0;transition:opacity .45s}
+.tile.on .ink.gold,.tile.on .dia.gold{opacity:1}
+.tile.on .ink.parch,.tile.on .dia.parch{opacity:0}
+.tile.on .ink.glow{opacity:.14}
+.tile.on .ink.hl{opacity:.5}
+.tile.empty .cell{fill:#ffffff04;stroke:#ffffff06}
+.dotpiece{opacity:.55!important}.tile.dot.on .dia.gold{opacity:1}.tile.dot.on .dia.parch{opacity:0!important}
+.glyph{font-family:HarfNaskh,"Amiri","Scheherazade New","Noto Naskh Arabic","Traditional Arabic",serif;fill:url(#gG);pointer-events:none}
+.glyph.reveal{opacity:0;animation:fadein 1.4s ease .9s forwards}
+@keyframes fadein{to{opacity:.95}}
+.glyph.peek{opacity:0;animation:peek .5s ease forwards}@keyframes peek{to{opacity:.2}}
+#board.solved .ink.gold,#board.solved .ink.hl,#board.solved .ink.glow{animation:dim 1.4s ease .9s forwards}
+@keyframes dim{to{opacity:.22}}
+.cursor{fill:none;stroke:var(--gold);stroke-width:3;rx:14;opacity:0;pointer-events:none}
+#board:focus-visible .cursor{opacity:.9}
+.hint-ring{fill:none;stroke:var(--gold);stroke-width:3;rx:14;pointer-events:none;animation:ring 1.1s ease-in-out 3}
+@keyframes ring{0%,100%{opacity:0}50%{opacity:1}}
+/* completion pulse: a wave of light spreading from the last tapped tile */
+#board.solved .tile{animation:pulse 1s ease-out both;animation-delay:calc(var(--d,0) * 70ms)}
+@keyframes pulse{0%{filter:brightness(1)}35%{filter:brightness(1.8) drop-shadow(0 0 5px #f1d27a)}100%{filter:brightness(1.05)}}
+#board.solved .tile.on .ink.glow{opacity:.26}
+.dock{display:flex;justify-content:center;gap:10px;padding:8px 18px 18px;min-height:78px;align-items:center}
+.pill{height:48px;padding:0 22px;border-radius:999px;border:1px solid var(--btn-line);background:var(--btn);color:var(--parch);font:inherit;font-size:15px;cursor:pointer}
+.pill.primary{background:linear-gradient(180deg,#e8c875,#c19236);color:#201808;border-color:transparent;font-weight:600}
+.pill:active{transform:scale(.97)}
+.done{text-align:center;display:grid;gap:8px;justify-items:center;animation:rise .6s ease both}
+.done p{margin:0;color:var(--parch);font-size:17px}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){.glyph.reveal{animation:none;opacity:.95}.glyph.peek{animation:none;opacity:.2}#board.solved .ink.gold,#board.solved .ink.hl,#board.solved .ink.glow{animation:none;opacity:.22}.rot,.ink,.dia,#board{transition:none}#board.solved .tile{animation:none}.hint-ring{animation:none;opacity:1}.done{animation:none}}
+@media (max-height:420px){header{padding:6px 14px 0}.dock{min-height:60px;padding:4px 14px 8px}.pill{height:42px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><span class="ar" lang="ar">وصل</span><span>Khatti Loop</span></div>
+  <div class="lvl" id="lvl" aria-live="off">Level 1</div>
+  <button class="icon-btn" id="snd" aria-pressed="true" aria-label="Sound">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path id="sndwave" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>
+  </button>
+</header>
+<main><svg id="board" role="group" tabindex="0" aria-label="Puzzle board. Arrow keys move, Space or Enter turns a tile."></svg></main>
+<div class="dock" id="dock">
+  <button class="pill" id="hint">Hint</button>
+  <button class="pill" id="peek">Peek</button>
+  <button class="pill" id="reset">Reshuffle</button>
+</div>
+<div class="dock" id="done" hidden>
+  <div class="done"><p id="doneMsg"></p><button class="pill primary" id="next">Continue</button></div>
+</div>
+<div class="sr" id="sr" role="status" aria-live="polite"></div>
+
+<script>
+/* ======================================================================
+   Khatti Loop: a tap-to-rotate line puzzle (self-contained, no dependencies)
+   Modules: Geometry · Generator · Evaluator · Store · Audio · View · Game (state machine)
+   ====================================================================== */
+(()=>{'use strict';
+
+/* ---------- Geometry: connection bitmasks (clockwise: N,E,S,W) ---------- */
+const N=1,E=2,S=4,W=8;
+const DIRS=[{b:N,dx:0,dy:-1,o:S},{b:E,dx:1,dy:0,o:W},{b:S,dx:0,dy:1,o:N},{b:W,dx:-1,dy:0,o:E}];
+const rotMask=(m,r)=>{r&=3;return((m<<r)|(m>>(4-r)))&15;};         // r quarter-turns clockwise
+const BASES=[1,5,3,7,15];                                           // end, straight, corner, tee, cross (drawn at rotation 0)
+const canon=mask=>{for(const base of BASES)for(let rot=0;rot<4;rot++)if(rotMask(base,rot)===mask)return{base,rot};throw Error('bad mask');};
+const LINES={1:'M50 0V50',5:'M50 0V100',3:'M50 0A50 50 0 0 0 100 50',7:'M50 0V100M50 50H100',15:'M50 0V100M0 50H100'};
+const DIAMOND='M50 39L61 50L50 61L39 50Z';                          // the rhombic nuqta, used on line ends
+
+/* ---------- Shapes: every level is a letter or word drawn as a connected line, then scrambled ----------
+   Forms are simplified geometric (Kufic-inspired) skeletons on a tile grid, not authentic Naskh outlines.
+   Paths list grid cells; consecutive cells connect, a change of direction becomes a curved corner. */
+const L=(id,ar,name,note,w,h,paths,dots=[])=>({id,ar,name,note,w,h,paths,dots});
+const LETTERS={
+  alif:L('alif','ا','Alif','the first letter',1,4,[[[0,0],[0,1],[0,2],[0,3]]]),
+  ba:L('ba','ب','Ba','the second letter',3,3,[[[0,0],[0,1],[1,1],[2,1],[2,0]]],[[1,2]]),
+  nun:L('nun','ن','Nun','the 25th letter',3,3,[[[0,1],[0,2],[1,2],[2,2],[2,1]]],[[1,0]]),
+  lam:L('lam','ل','Lam','the 23rd letter',3,4,[[[2,0],[2,1],[2,2],[2,3],[1,3],[0,3],[0,2]]]),
+  waw:L('waw','و','Waw','the 27th letter',2,4,[[[0,0],[1,0],[1,1],[0,1],[0,0]],[[1,1],[1,2],[1,3],[0,3]]]),
+  mim:L('mim','م','Mim','the 24th letter',2,4,[[[0,0],[1,0],[1,1],[0,1],[0,0]],[[0,1],[0,2],[0,3]]]),
+  ra:L('ra','ر','Ra','the 10th letter',2,3,[[[1,0],[1,1],[1,2],[0,2]]])
+};
+function compose(id,ar,name,note,parts){   // parts are in reading order; Arabic runs right to left, letters share a baseline
+  const ls=parts.map(k=>LETTERS[k]),w=ls.reduce((a,l)=>a+l.w,0),h=Math.max(...ls.map(l=>l.h)),paths=[],dots=[];let used=0;
+  for(const l of ls){const ox=w-used-l.w,oy=h-l.h;used+=l.w;
+    for(const pa of l.paths)paths.push(pa.map(([x,y])=>[x+ox,y+oy]));for(const [x,y] of l.dots)dots.push([x+ox,y+oy]);}
+  return{id,ar,name,note,w,h,paths,dots};
+}
+const UNITS=[LETTERS.alif,LETTERS.ba,LETTERS.nun,LETTERS.lam,LETTERS.waw,LETTERS.mim,LETTERS.ra,
+  compose('nur','نور','Nur','light',['nun','waw','ra']),compose('lawn','لون','Lawn','colour',['lam','waw','nun'])];
+
+/* ---------- Generator: shape + optional gold frame rings (later cycles) -> tile masks ---------- */
+function plan(level){
+  const unit=UNITS[(level-1)%UNITS.length],cycle=Math.floor((level-1)/UNITS.length);
+  let rings=Math.min(cycle,2);const off=r=>r>0?2*r:1;
+  while(rings>0&&(unit.w+2*off(rings)>10||unit.h+2*off(rings)>12))rings--;
+  const gx=off(rings);return{unit,cycle,rings,gx,cols:unit.w+2*gx,rows:unit.h+2*gx};
+}
+function generate(level){
+  const{unit,rings,gx,cols,rows,cycle}=plan(level),n=cols*rows,mask=new Array(n).fill(0),dot=new Array(n).fill(false);
+  const link=(a,b)=>{const dx=b[0]-a[0],dy=b[1]-a[1],d=DIRS.findIndex(q=>q.dx===dx&&q.dy===dy);
+    if(d<0||a[0]<0||a[1]<0||b[0]<0||b[1]<0||a[0]>=cols||b[0]>=cols||a[1]>=rows||b[1]>=rows)throw Error('bad shape path');
+    mask[a[1]*cols+a[0]]|=DIRS[d].b;mask[b[1]*cols+b[0]]|=DIRS[d].o;};
+  for(const pa of unit.paths){const cells=pa.map(([x,y])=>[x+gx,y+gx]);for(let i=1;i<cells.length;i++)link(cells[i-1],cells[i]);}
+  for(const [x,y] of unit.dots)dot[(y+gx)*cols+x+gx]=true;
+  for(let k=0;k<rings;k++){const i=2*k,x1=cols-1-i,y1=rows-1-i,c=[];
+    for(let x=i;x<=x1;x++)c.push([x,i]);for(let y=i+1;y<=y1;y++)c.push([x1,y]);for(let x=x1-1;x>=i;x--)c.push([x,y1]);for(let y=y1-1;y>=i;y--)c.push([i,y]);
+    for(let j=1;j<c.length;j++)link(c[j-1],c[j]);}
+  return{level,cols,rows,unit,cycle,rings,box:{x:gx,y:gx,w:unit.w,h:unit.h},
+    tiles:mask.map((m,i)=>{if(!m)return{kind:dot[i]?'dot':'empty',base:0,sol:0,solMask:0};const c=canon(m);return{kind:'line',base:c.base,sol:c.rot,solMask:m};})};
+}
+function scramble(puz,random=Math.random){
+  const line=puz.tiles.map((t,i)=>t.kind==='line'?i:-1).filter(i=>i>=0);
+  for(let tries=0;tries<20;tries++){
+    const rots=puz.tiles.map(t=>t.kind==='line'?Math.floor(random()*4):0);
+    if(!evaluate(puz,rots).solved)return rots;
+  }
+  const rots=puz.tiles.map(t=>t.sol),i=line.find(i=>puz.tiles[i].base!==15);
+  if(i!==undefined)rots[i]=(puz.tiles[i].sol+1)&3;return rots;
+}
+
+/* ---------- Evaluator: a tile is "happy" when every line it has meets a matching line ---------- */
+function maskAt(puz,rots,i){return rotMask(puz.tiles[i].base,rots[i]);}
+function evaluate(puz,rots){
+  const{cols,rows}=puz,happy=new Array(cols*rows).fill(true);
+  for(let i=0;i<happy.length;i++){
+    const m=maskAt(puz,rots,i),x=i%cols,y=Math.floor(i/cols);
+    for(const d of DIRS){
+      if(!(m&d.b))continue;
+      const nx=x+d.dx,ny=y+d.dy;
+      if(nx<0||ny<0||nx>=cols||ny>=rows||!(maskAt(puz,rots,ny*cols+nx)&d.o)){happy[i]=false;break;}
+    }
+  }
+  return{happy,solved:happy.every(Boolean)};
+}
+
+/* ---------- Store: validated localStorage with in-memory fallback ---------- */
+const KEY='khatti.loop.v2';
+const Store=(()=>{
+  let mem=null;
+  const valid=v=>v&&v.version===1&&Number.isSafeInteger(v.level)&&v.level>=1&&v.level<=1e6&&Number.isSafeInteger(v.completed)&&v.completed>=0&&typeof v.sound==='boolean'&&Array.isArray(v.found)&&v.found.length<=200&&v.found.every(f=>typeof f==='string'&&f.length<=20)
+    &&(v.board===null||(Number.isInteger(v.board?.cols)&&v.board.cols>=2&&v.board.cols<=12&&Number.isInteger(v.board.rows)&&v.board.rows>=2&&v.board.rows<=14
+      &&Array.isArray(v.board.rots)&&v.board.rots.length===v.board.cols*v.board.rows&&v.board.rots.every(r=>Number.isInteger(r)&&r>=0&&r<4)));
+  const fresh=()=>({version:1,level:1,completed:0,sound:true,found:[],board:null});
+  return{
+    load(){try{const raw=localStorage.getItem(KEY);if(raw){const v=JSON.parse(raw);if(valid(v))return v;}}catch{}return mem&&valid(mem)?mem:fresh();},
+    save(v){mem=v;try{localStorage.setItem(KEY,JSON.stringify(v));}catch{}}
+  };
+})();
+
+/* ---------- Audio: very quiet, optional, created lazily on the first tap ---------- */
+const Sound=(()=>{
+  let ac=null;
+  const ctx=()=>{try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();}catch{ac=null;}return ac;};
+  const tone=(f,t,d,g)=>{const a=ctx();if(!a)return;const o=a.createOscillator(),v=a.createGain();o.type='sine';o.frequency.value=f;
+    v.gain.setValueAtTime(0,a.currentTime+t);v.gain.linearRampToValueAtTime(g,a.currentTime+t+.02);v.gain.exponentialRampToValueAtTime(.0001,a.currentTime+t+d);o.connect(v).connect(a.destination);o.start(a.currentTime+t);o.stop(a.currentTime+t+d+.05);};
+  return{tick(){tone(440,0,.09,.03);},chime(){[392,494,587,784].forEach((f,i)=>tone(f,i*.16,1.1,.05));}};
+})();
+
+/* ---------- View: SVG board ---------- */
+const NS='http://www.w3.org/2000/svg',$=id=>document.getElementById(id);
+const el=(tag,attrs={},parent)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.append(e);return e;};
+const board=$('board');
+let V=null;   // {tiles:[{g,rot,tile}], cursor}
+function defs(){
+  const d=el('defs');
+  const gp=el('radialGradient',{id:'gP',gradientUnits:'userSpaceOnUse',cx:50,cy:50,r:70},d);
+  [['0','#efe3c6'],['1','#bfae88']].forEach(([o,c])=>el('stop',{offset:o,'stop-color':c},gp));
+  const gg=el('radialGradient',{id:'gG',gradientUnits:'userSpaceOnUse',cx:50,cy:50,r:70},d);
+  [['0','#f7e3a3'],['.6','#e2b955'],['1','#cf9f3f']].forEach(([o,c])=>el('stop',{offset:o,'stop-color':c},gg));
+  for(const b of BASES){const g=el('g',{id:'L'+b},d);el('path',{d:LINES[b]},g);}
+  return d;
+}
+function build(puz,rots){
+  board.replaceChildren(defs());
+  board.setAttribute('viewBox',`-10 -10 ${puz.cols*100+20} ${puz.rows*100+20}`);
+  const root=el('g',{},board);
+  V={tiles:[],cursor:null,cx:0,cy:0,root};
+  puz.tiles.forEach((t,i)=>{
+    const x=i%puz.cols,y=Math.floor(i/puz.cols);
+    const g=el('g',{class:'tile '+t.kind,transform:`translate(${x*100} ${y*100})`,style:`--d:0`},root);
+    el('rect',{class:'cell',x:4,y:4,width:92,height:92,rx:14},g);
+    const rot=el('g',{class:'rot'},g);
+    if(t.kind==='line'){
+      for(const cls of ['glow','parch','gold','hl'])el('use',{href:'#L'+t.base,class:'ink '+cls},rot);
+      if(t.base===1){el('path',{d:DIAMOND,class:'dia parch'},rot);el('path',{d:DIAMOND,class:'dia gold'},rot);}
+    }else if(t.kind==='dot'){el('path',{d:DIAMOND,class:'dia parch dotpiece'},rot);el('path',{d:DIAMOND,class:'dia gold'},rot);}
+    V.tiles.push({g,rot,angle:rots[i]*90});
+    rot.style.transform=`rotate(${rots[i]*90}deg)`;
+  });
+  V.cursor=el('rect',{class:'cursor',x:4,y:4,width:92,height:92},root);
+  moveCursor(0,0);
+}
+function paint(puz,rots){
+  const{happy}=evaluate(puz,rots);
+  V.tiles.forEach((v,i)=>v.g.classList.toggle('on',puz.tiles[i].kind==='line'&&happy[i]));
+}
+function turn(i,rots){   // angle only ever increases, so the tile always spins clockwise, even on rapid taps
+  const v=V.tiles[i];v.angle+=90;v.rot.style.transform=`rotate(${v.angle}deg)`;
+}
+function showGlyph(puz,cls){   // the real Arabic letter or word, fitted over the shape's box
+  const t=el('text',{class:'glyph '+cls,'text-anchor':'middle','font-size':100,direction:'rtl',lang:'ar'},V.root);
+  t.textContent=puz.unit.ar;
+  const b=t.getBBox(),bx=puz.box.x*100,by=puz.box.y*100,bw=puz.box.w*100,bh=puz.box.h*100,s=Math.min(bw*1.25/b.width,bh*1.15/b.height);
+  t.setAttribute('transform',`translate(${bx+bw/2-(b.x+b.width/2)*s} ${by+bh/2-(b.y+b.height/2)*s}) scale(${s})`);
+  return t;
+}
+function moveCursor(cx,cy){V.cx=cx;V.cy=cy;V.cursor.setAttribute('transform',`translate(${cx*100} ${cy*100})`);}
+function tileFromEvent(e,puz){
+  const m=board.getScreenCTM();if(!m)return-1;
+  const p=new DOMPoint(e.clientX,e.clientY).matrixTransform(m.inverse());
+  const x=Math.floor(p.x/100),y=Math.floor(p.y/100);
+  return x<0||y<0||x>=puz.cols||y>=puz.rows?-1:y*puz.cols+x;
+}
+
+/* ---------- Game: explicit state machine  loading → playing → solved → loading ---------- */
+const G={mode:'loading',puz:null,rots:null,level:1,last:0,save:Store.load(),saveTimer:0};
+const phrases=['Beautifully joined.','Every line, connected.','Peace in the pattern.','The loop is closed.','Calm, and complete.'];
+const say=m=>{$('sr').textContent='';requestAnimationFrame(()=>{$('sr').textContent=m;});};
+const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function persist(now){
+  clearTimeout(G.saveTimer);
+  const write=()=>{
+    G.save.level=G.level;
+    G.save.board=G.mode==='playing'&&G.puz?{cols:G.puz.cols,rows:G.puz.rows,rots:G.rots.slice()}:null;
+    Store.save(G.save);
+  };
+  now?write():G.saveTimer=setTimeout(write,250);
+}
+function setMode(m){
+  G.mode=m;
+  $('dock').hidden=m==='solved';$('done').hidden=m!=='solved';
+  board.classList.toggle('solved',m==='solved');
+}
+function loadLevel(level,opts={}){
+  G.level=level;$('lvl').textContent='Level '+level;
+  G.puz=generate(level);
+  const saved=opts.resume&&G.save.board&&G.save.board.cols===G.puz.cols&&G.save.board.rows===G.puz.rows?G.save.board:null;
+  G.rots=saved?saved.rots.map((r,i)=>G.puz.tiles[i].kind==='line'?r:0):scramble(G.puz);
+  if(saved&&evaluate(G.puz,G.rots).solved)G.rots=scramble(G.puz);
+  build(G.puz,G.rots);paint(G.puz,G.rots);
+  G.last=0;board.classList.remove('out');
+  setMode('playing');persist(true);
+  say('Level '+level+'. Join every line to reveal a letter or word.');
+}
+function transitionTo(level){
+  setMode('loading');
+  if(reduced()){loadLevel(level);return;}
+  board.classList.add('out');
+  setTimeout(()=>loadLevel(level),280);
+}
+function rotateTile(i,viaKey){
+  if(G.mode!=='playing'||i<0||G.puz.tiles[i].kind!=='line')return;
+  G.rots[i]=(G.rots[i]+1)&3;G.last=i;
+  turn(i,G.rots);
+  const r=evaluate(G.puz,G.rots);
+  V.tiles.forEach((v,k)=>v.g.classList.toggle('on',G.puz.tiles[k].kind==='line'&&r.happy[k]));
+  if(G.save.sound&&!r.solved)Sound.tick();
+  navigator.vibrate?.(8);
+  if(viaKey)say('Turned. '+r.happy.filter(Boolean).length+' of '+r.happy.length+' tiles joined.');
+  if(r.solved)complete();else persist();
+}
+function complete(){
+  setMode('solved');
+  const lx=G.last%G.puz.cols,ly=Math.floor(G.last/G.puz.cols);
+  V.tiles.forEach((v,i)=>v.g.style.setProperty('--d',String(Math.abs(i%G.puz.cols-lx)+Math.abs(Math.floor(i/G.puz.cols)-ly))));
+  const u=G.puz.unit;
+  V.tiles.forEach((v,i)=>{if(G.puz.tiles[i].kind==='dot')v.g.classList.add('on');});
+  showGlyph(G.puz,'reveal');
+  const msg=u.ar+' · '+u.name+', '+u.note+'.';
+  $('doneMsg').textContent=msg;
+  if(!G.save.found.includes(u.id))G.save.found.push(u.id);
+  G.save.completed++;G.save.level=G.level+1;G.save.board=null;Store.save(G.save);
+  if(G.save.sound)Sound.chime();navigator.vibrate?.([14,40,14]);
+  say('Level '+G.level+' complete. You revealed '+u.name+', '+u.note+'.');
+  document.dispatchEvent(new CustomEvent('khatti-loop:complete',{detail:{level:G.level,shape:u.id,ar:u.ar,completed:G.save.completed}}));
+  setTimeout(()=>$('next').focus({preventScroll:true}),400);
+}
+function hint(){
+  if(G.mode!=='playing')return;
+  const wrong=G.puz.tiles.map((t,i)=>maskAt(G.puz,G.rots,i)!==t.solMask?i:-1).filter(i=>i>=0);
+  if(!wrong.length)return;
+  const i=wrong[Math.floor(Math.random()*wrong.length)],x=i%G.puz.cols,y=Math.floor(i/G.puz.cols);
+  const ring=el('rect',{class:'hint-ring',x:4,y:4,width:92,height:92,transform:`translate(${x*100} ${y*100})`},board);
+  setTimeout(()=>ring.remove(),3600);
+  say('Try the tile in row '+(y+1)+', column '+(x+1)+'.');
+}
+
+/* ---------- Input: tap = pointerdown + pointerup on the same tile with little movement ---------- */
+let press=null;
+board.addEventListener('pointerdown',e=>{
+  if(e.button!==0||G.mode!=='playing')return;
+  press={id:e.pointerId,tile:tileFromEvent(e,G.puz),x:e.clientX,y:e.clientY};
+});
+board.addEventListener('pointerup',e=>{
+  if(!press||e.pointerId!==press.id)return;
+  const p=press;press=null;
+  if(Math.hypot(e.clientX-p.x,e.clientY-p.y)>14)return;                // a drag or pinch is not a tap
+  const i=tileFromEvent(e,G.puz);
+  if(i>=0&&i===p.tile){moveCursor(i%G.puz.cols,Math.floor(i/G.puz.cols));rotateTile(i,false);}
+});
+board.addEventListener('pointercancel',()=>{press=null;});
+board.addEventListener('keydown',e=>{
+  if(G.mode!=='playing')return;
+  const k={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]}[e.key];
+  if(k){e.preventDefault();moveCursor(Math.max(0,Math.min(G.puz.cols-1,V.cx+k[0])),Math.max(0,Math.min(G.puz.rows-1,V.cy+k[1])));say('Row '+(V.cy+1)+', column '+(V.cx+1));}
+  else if(e.key===' '||e.key==='Enter'){e.preventDefault();rotateTile(V.cy*G.puz.cols+V.cx,true);}
+});
+$('hint').onclick=hint;
+$('peek').onclick=()=>{if(G.mode!=='playing'||board.querySelector('.glyph'))return;const t=showGlyph(G.puz,'peek');setTimeout(()=>t.remove(),2600);};
+$('reset').onclick=()=>{if(G.mode!=='playing')return;G.rots=scramble(G.puz);G.puz.tiles.forEach((t,i)=>{if(t.kind!=='line')return;const v=V.tiles[i];const base=Math.floor(v.angle/360)*360;let a=base+G.rots[i]*90;if(a<v.angle)a+=360;v.angle=a;v.rot.style.transform=`rotate(${a}deg)`;});paint(G.puz,G.rots);persist();say('Tiles reshuffled.');};
+$('next').onclick=()=>{if(G.mode==='solved')transitionTo(G.level+1);};
+function syncSound(){const on=G.save.sound;$('snd').setAttribute('aria-pressed',String(on));$('snd').setAttribute('aria-label',on?'Sound on':'Sound off');$('sndwave').style.display=on?'':'none';}
+$('snd').onclick=()=>{G.save.sound=!G.save.sound;syncSound();Store.save(G.save);if(G.save.sound)Sound.tick();};
+document.addEventListener('visibilitychange',()=>{if(document.hidden)persist(true);});
+addEventListener('pagehide',()=>persist(true));
+
+/* ---------- Boot ---------- */
+syncSound();
+loadLevel(G.save.level,{resume:true});
+
+/* Small public API so the host app can embed or test the module */
+window.KhattiLoop={generate,scramble,evaluate,rotMask,
+  state:()=>({mode:G.mode,level:G.level,shape:G.puz.unit.id,cols:G.puz.cols,rows:G.puz.rows,rots:G.rots.slice(),completed:G.save.completed,found:G.save.found.slice()}),units:()=>UNITS.map(u=>u.id),
+  goto:level=>transitionTo(level),
+  solveForTest:()=>{G.puz.tiles.forEach((t,i)=>{if(t.kind!=='line')return;while(G.rots[i]!==t.sol){rotateTile(i,false);if(G.mode!=='playing')break;}});}   // rotates each tile via the real input path
+};
+})();
+</script>
+</body>
+</html>

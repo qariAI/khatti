@@ -1,0 +1,689 @@
+{
+  "schemaVersion": 1,
+  "courseTitle": "Write complete ayahs",
+  "source": {
+    "name": "Tanzil Project",
+    "url": "https://tanzil.net",
+    "downloadUrl": "https://tanzil.net/pub/download/index.php?quranType=simple&outType=txt-2&agree=true",
+    "edition": "Simple, Version 1.1",
+    "retrievedAt": "2026-10-22",
+    "upstreamSha256": "f3268cfe7a400add8a8024fe23368d66f58cc8baa51773fe94e323625c66344b",
+    "excerptSha256": "15ad070d63416b4c0e86dfe006fdb6149b2437703a52ba7626265fd075e95eea",
+    "copyright": "# PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK\n#====================================================================\n#\n#  Tanzil Quran Text (Simple, Version 1.1)\n#  Copyright (C) 2007-2026 Tanzil Project\n#  License: Creative Commons Attribution 3.0\n#\n#  This copy of the Quran text is carefully produced, highly \n#  verified and continuously monitored by a group of specialists \n#  at Tanzil Project.\n#\n#  TERMS OF USE:\n#\n#  - Permission is granted to copy and distribute verbatim copies \n#    of this text, but CHANGING IT IS NOT ALLOWED.\n#\n#  - This Quran text can be used in any website or application, \n#    provided that its source (Tanzil Project) is clearly indicated, \n#    and a link is made to tanzil.net to enable users to keep\n#    track of changes.\n#\n#  - This copyright notice shall be included in all verbatim copies \n#    of the text, and shall be reproduced appropriately in all files \n#    derived from or containing substantial portion of this text.\n#\n#  Please check updates at: http://tanzil.net/updates/\n#\n#====================================================================",
+    "numbering": "Al-Fatihah includes Basmala as 1:1. Other opening Basmalas are shown separately from the numbered ayah.",
+    "orthography": "Tanzil Simple (Imlaei), not an Uthmani facsimile."
+  },
+  "review": {
+    "status": "draft",
+    "reviewerId": null,
+    "writtenSignoff": null,
+    "scope": "New typeset writing curriculum. No authored stroke-order assessment."
+  },
+  "surahs": [
+    {
+      "id": 1,
+      "name": "Al-Fatihah",
+      "subtitle": "The Opening",
+      "ayahCount": 7,
+      "ayahs": [
+        {
+          "id": "1:1",
+          "number": 1,
+          "sourceText": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "1:1:word-1",
+              "text": "بِسْمِ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "1:1:word-2",
+              "text": "اللَّهِ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "1:1:word-3",
+              "text": "الرَّحْمَٰنِ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check the position and small shape of the sukun above the letter."
+            },
+            {
+              "id": "1:1:word-4",
+              "text": "الرَّحِيمِ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        },
+        {
+          "id": "1:2",
+          "number": 2,
+          "sourceText": "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "1:2:word-1",
+              "text": "الْحَمْدُ",
+              "focus": "Check the position and small shape of the sukun above the letter. Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "1:2:word-2",
+              "text": "لِلَّهِ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark."
+            },
+            {
+              "id": "1:2:word-3",
+              "text": "رَبِّ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "1:2:word-4",
+              "text": "الْعَالَمِينَ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        },
+        {
+          "id": "1:3",
+          "number": 3,
+          "sourceText": "الرَّحْمَٰنِ الرَّحِيمِ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "1:3:word-1",
+              "text": "الرَّحْمَٰنِ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check the position and small shape of the sukun above the letter."
+            },
+            {
+              "id": "1:3:word-2",
+              "text": "الرَّحِيمِ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        },
+        {
+          "id": "1:4",
+          "number": 4,
+          "sourceText": "مَالِكِ يَوْمِ الدِّينِ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "1:4:word-1",
+              "text": "مَالِكِ",
+              "focus": "Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "1:4:word-2",
+              "text": "يَوْمِ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "1:4:word-3",
+              "text": "الدِّينِ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        },
+        {
+          "id": "1:5",
+          "number": 5,
+          "sourceText": "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "1:5:word-1",
+              "text": "إِيَّاكَ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Preserve the hamza and its position in the reference."
+            },
+            {
+              "id": "1:5:word-2",
+              "text": "نَعْبُدُ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "1:5:word-3",
+              "text": "وَإِيَّاكَ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Preserve the hamza and its position in the reference."
+            },
+            {
+              "id": "1:5:word-4",
+              "text": "نَسْتَعِينُ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        },
+        {
+          "id": "1:6",
+          "number": 6,
+          "sourceText": "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "1:6:word-1",
+              "text": "اهْدِنَا",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "1:6:word-2",
+              "text": "الصِّرَاطَ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "1:6:word-3",
+              "text": "الْمُسْتَقِيمَ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        },
+        {
+          "id": "1:7",
+          "number": 7,
+          "sourceText": "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "1:7:word-1",
+              "text": "صِرَاطَ",
+              "focus": "Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "1:7:word-2",
+              "text": "الَّذِينَ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "1:7:word-3",
+              "text": "أَنْعَمْتَ",
+              "focus": "Check the position and small shape of the sukun above the letter. Preserve the hamza and its position in the reference."
+            },
+            {
+              "id": "1:7:word-4",
+              "text": "عَلَيْهِمْ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "1:7:word-5",
+              "text": "غَيْرِ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "1:7:word-6",
+              "text": "الْمَغْضُوبِ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "1:7:word-7",
+              "text": "عَلَيْهِمْ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "1:7:word-8",
+              "text": "وَلَا",
+              "focus": "Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "1:7:word-9",
+              "text": "الضَّالِّينَ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 112,
+      "name": "Al-Ikhlas",
+      "subtitle": "Sincerity",
+      "ayahCount": 4,
+      "ayahs": [
+        {
+          "id": "112:1",
+          "number": 1,
+          "sourceText": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ قُلْ هُوَ اللَّهُ أَحَدٌ",
+          "contentStart": 39,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "112:1:word-1",
+              "text": "قُلْ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "112:1:word-2",
+              "text": "هُوَ",
+              "focus": "Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "112:1:word-3",
+              "text": "اللَّهُ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "112:1:word-4",
+              "text": "أَحَدٌ",
+              "focus": "Preserve the hamza and its position in the reference. Look closely at where the letter connections stop. Keep those gaps visible."
+            }
+          ]
+        },
+        {
+          "id": "112:2",
+          "number": 2,
+          "sourceText": "اللَّهُ الصَّمَدُ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "112:2:word-1",
+              "text": "اللَّهُ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "112:2:word-2",
+              "text": "الصَّمَدُ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Look closely at where the letter connections stop. Keep those gaps visible."
+            }
+          ]
+        },
+        {
+          "id": "112:3",
+          "number": 3,
+          "sourceText": "لَمْ يَلِدْ وَلَمْ يُولَدْ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "112:3:word-1",
+              "text": "لَمْ",
+              "focus": "Check the position and small shape of the sukun above the letter."
+            },
+            {
+              "id": "112:3:word-2",
+              "text": "يَلِدْ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "112:3:word-3",
+              "text": "وَلَمْ",
+              "focus": "Check the position and small shape of the sukun above the letter. Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "112:3:word-4",
+              "text": "يُولَدْ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        },
+        {
+          "id": "112:4",
+          "number": 4,
+          "sourceText": "وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "112:4:word-1",
+              "text": "وَلَمْ",
+              "focus": "Check the position and small shape of the sukun above the letter. Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "112:4:word-2",
+              "text": "يَكُن",
+              "focus": "Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "112:4:word-3",
+              "text": "لَّهُ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark."
+            },
+            {
+              "id": "112:4:word-4",
+              "text": "كُفُوًا",
+              "focus": "Check each dotted letter; compare the number and position of its dots. Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "112:4:word-5",
+              "text": "أَحَدٌ",
+              "focus": "Preserve the hamza and its position in the reference. Look closely at where the letter connections stop. Keep those gaps visible."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 113,
+      "name": "Al-Falaq",
+      "subtitle": "Daybreak",
+      "ayahCount": 5,
+      "ayahs": [
+        {
+          "id": "113:1",
+          "number": 1,
+          "sourceText": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ",
+          "contentStart": 39,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "113:1:word-1",
+              "text": "قُلْ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "113:1:word-2",
+              "text": "أَعُوذُ",
+              "focus": "Preserve the hamza and its position in the reference. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "113:1:word-3",
+              "text": "بِرَبِّ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "113:1:word-4",
+              "text": "الْفَلَقِ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        },
+        {
+          "id": "113:2",
+          "number": 2,
+          "sourceText": "مِن شَرِّ مَا خَلَقَ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "113:2:word-1",
+              "text": "مِن",
+              "focus": "Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "113:2:word-2",
+              "text": "شَرِّ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "113:2:word-3",
+              "text": "مَا",
+              "focus": "Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "113:2:word-4",
+              "text": "خَلَقَ",
+              "focus": "Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        },
+        {
+          "id": "113:3",
+          "number": 3,
+          "sourceText": "وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "113:3:word-1",
+              "text": "وَمِن",
+              "focus": "Check each dotted letter; compare the number and position of its dots. Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "113:3:word-2",
+              "text": "شَرِّ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "113:3:word-3",
+              "text": "غَاسِقٍ",
+              "focus": "Check each dotted letter; compare the number and position of its dots. Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "113:3:word-4",
+              "text": "إِذَا",
+              "focus": "Preserve the hamza and its position in the reference. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "113:3:word-5",
+              "text": "وَقَبَ",
+              "focus": "Check each dotted letter; compare the number and position of its dots. Look closely at where the letter connections stop. Keep those gaps visible."
+            }
+          ]
+        },
+        {
+          "id": "113:4",
+          "number": 4,
+          "sourceText": "وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "113:4:word-1",
+              "text": "وَمِن",
+              "focus": "Check each dotted letter; compare the number and position of its dots. Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "113:4:word-2",
+              "text": "شَرِّ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "113:4:word-3",
+              "text": "النَّفَّاثَاتِ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "113:4:word-4",
+              "text": "فِي",
+              "focus": "Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "113:4:word-5",
+              "text": "الْعُقَدِ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        },
+        {
+          "id": "113:5",
+          "number": 5,
+          "sourceText": "وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "113:5:word-1",
+              "text": "وَمِن",
+              "focus": "Check each dotted letter; compare the number and position of its dots. Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "113:5:word-2",
+              "text": "شَرِّ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "113:5:word-3",
+              "text": "حَاسِدٍ",
+              "focus": "Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "113:5:word-4",
+              "text": "إِذَا",
+              "focus": "Preserve the hamza and its position in the reference. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "113:5:word-5",
+              "text": "حَسَدَ",
+              "focus": "Look closely at where the letter connections stop. Keep those gaps visible."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 114,
+      "name": "An-Nas",
+      "subtitle": "Mankind",
+      "ayahCount": 6,
+      "ayahs": [
+        {
+          "id": "114:1",
+          "number": 1,
+          "sourceText": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ قُلْ أَعُوذُ بِرَبِّ النَّاسِ",
+          "contentStart": 39,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "114:1:word-1",
+              "text": "قُلْ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "114:1:word-2",
+              "text": "أَعُوذُ",
+              "focus": "Preserve the hamza and its position in the reference. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "114:1:word-3",
+              "text": "بِرَبِّ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "114:1:word-4",
+              "text": "النَّاسِ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        },
+        {
+          "id": "114:2",
+          "number": 2,
+          "sourceText": "مَلِكِ النَّاسِ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "114:2:word-1",
+              "text": "مَلِكِ",
+              "focus": "Follow the connected letter body from right to left, then compare the vowel marks."
+            },
+            {
+              "id": "114:2:word-2",
+              "text": "النَّاسِ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        },
+        {
+          "id": "114:3",
+          "number": 3,
+          "sourceText": "إِلَٰهِ النَّاسِ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "114:3:word-1",
+              "text": "إِلَٰهِ",
+              "focus": "Preserve the small alif shown in the reference. Preserve the hamza and its position in the reference."
+            },
+            {
+              "id": "114:3:word-2",
+              "text": "النَّاسِ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        },
+        {
+          "id": "114:4",
+          "number": 4,
+          "sourceText": "مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "114:4:word-1",
+              "text": "مِن",
+              "focus": "Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "114:4:word-2",
+              "text": "شَرِّ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "114:4:word-3",
+              "text": "الْوَسْوَاسِ",
+              "focus": "Check the position and small shape of the sukun above the letter. Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "114:4:word-4",
+              "text": "الْخَنَّاسِ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check the position and small shape of the sukun above the letter."
+            }
+          ]
+        },
+        {
+          "id": "114:5",
+          "number": 5,
+          "sourceText": "الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "114:5:word-1",
+              "text": "الَّذِي",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "114:5:word-2",
+              "text": "يُوَسْوِسُ",
+              "focus": "Check the position and small shape of the sukun above the letter. Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "114:5:word-3",
+              "text": "فِي",
+              "focus": "Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "114:5:word-4",
+              "text": "صُدُورِ",
+              "focus": "Look closely at where the letter connections stop. Keep those gaps visible."
+            },
+            {
+              "id": "114:5:word-5",
+              "text": "النَّاسِ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        },
+        {
+          "id": "114:6",
+          "number": 6,
+          "sourceText": "مِنَ الْجِنَّةِ وَالنَّاسِ",
+          "contentStart": 0,
+          "focus": "Write from right to left. Keep joined letters connected, then check the dots and vowel marks.",
+          "wordLessons": [
+            {
+              "id": "114:6:word-1",
+              "text": "مِنَ",
+              "focus": "Check each dotted letter; compare the number and position of its dots."
+            },
+            {
+              "id": "114:6:word-2",
+              "text": "الْجِنَّةِ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check the position and small shape of the sukun above the letter."
+            },
+            {
+              "id": "114:6:word-3",
+              "text": "وَالنَّاسِ",
+              "focus": "Notice the shadda above a doubled letter. Keep it distinct from the nearby vowel mark. Check each dotted letter; compare the number and position of its dots."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

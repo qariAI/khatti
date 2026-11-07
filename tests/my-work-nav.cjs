@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');const assert=require('assert');const path=require('path');
+(async()=>{const server=require('child_process').spawn(process.execPath,[path.join(__dirname,'../scripts/serve.mjs')]);await new Promise(r=>server.stdout.once('data',r));const base='http://127.0.0.1:'+(process.env.PORT||4173);
+const b=await chromium.launch();const c=await b.newContext({viewport:{width:390,height:844}});const p=await c.newPage();await p.addInitScript(()=>{localStorage.setItem('harf.intros.auto.v1','false');localStorage.setItem('khatti.goal.v1',JSON.stringify({done:1}))});
+await p.goto(base+'/dist/Harf-Writer-v5-Complete-Ayahs.html');await p.waitForSelector('.creative-header');
+assert.equal(await p.locator('.nb-dock,.wk-dock').count(),0,'no bottom bar on Home');
+await p.click('.creative-mywork');await p.waitForSelector('#my-work');
+assert.equal(await p.locator('.wk-dock').count(),0,'no bottom bar in My work');
+assert.equal(await p.locator('#my-work [data-work-filter=poster]').count(),0,'no Posters filter');
+assert(!/free canvas/i.test(await p.innerText('#my-work')),'no free canvas offer');
+await p.click('#my-work [data-work=close]');await p.waitForTimeout(300);assert.equal(await p.locator('#my-work').count(),0,'My work closed');
+await p.click('.creative-hero .btn[data-path]');await p.waitForSelector('#scribe-path',{state:'visible'});
+assert.equal(await p.locator('.wk-dock').count(),0,'no bottom bar on Path');assert.equal(await p.locator('#scribe-path .sp-topbar button').count(),2);
+await p.click('#scribe-path [data-sp-nav=work]');await p.waitForSelector('#my-work');
+console.log('my-work-nav ok');await b.close();server.kill();})().catch(e=>{console.error(e);process.exit(1)});
