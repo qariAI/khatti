@@ -184,9 +184,9 @@ function spPracticeRun(item){
   P.hidden=false;P.innerHTML='<div class="sp-card" role="status">'+(stars>=1?'<div class="sp-stamp'+(stars===3?' gold':'')+'" aria-hidden="true">خط</div>':'')+'<div class="sp-pct">'+r.acc+'<small>%</small></div>'+spStarsHtml(stars)+
   '<p class="sp-detail">Coverage '+r.cov+'% · Precision '+r.prec+'% · Proportion '+r.prop+'%'+(r.ang!==null?' · Angle '+r.ang+'%':'')+'</p>'+
   (stars===0?'<p class="sp-msg">Not yet — trace the guide slowly and keep the whole shape in view.</p>':'')+
-  (sealNow?'<p class="sp-msg seal"><em class="sp-seal">ختم</em> Memory Seal — written from memory! +40 XP</p>':'')+
+  (sealNow?'<p class="sp-msg seal"><em class="sp-seal">ختم</em> Memory Seal — written from memory!</p>':'')+
   (opened.length?'<p class="sp-msg seal">🔓 Tier '+opened[0]+' · '+SP_TIERS[opened[0]-1].en+' is open.</p>':'')+
-  (xp&&!sealNow?'<p class="sp-msg">+'+xp+' XP</p>':'')+
+  
   (tier.fade&&attempt()<5?'<p class="sp-sub">The guide fades as you practise: it is '+Math.round(spGuide(item,attempt())*100)+'% next time.</p>':'')+
   '<div class="sp-acts"><button type="button" data-k="retry">Try again</button>'+(law?'<button type="button" class="gold" data-k="lawha">Claim Lawha ✦</button>':'')+(nx?'<button type="button" class="go" data-k="next">Next →</button>':'')+'<button type="button" data-k="close">Map</button></div></div>';
   (P.querySelector('.go')||P.querySelector('button')).focus();}

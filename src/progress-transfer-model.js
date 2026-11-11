@@ -4,7 +4,7 @@ import {validConnected} from './connected-model.js';
 import {validNamePractice} from './name-practice-model.js';
 import {validWorkSource} from './my-work-model.js';
 import {validPosterOptions} from './poster-model.js';
-export const PROGRESS_SCHEMA_VERSION=1,PROGRESS_APP_VERSION='6.53.0';
+export const PROGRESS_SCHEMA_VERSION=1,PROGRESS_APP_VERSION='6.54.0';
 export function migrateProgressBackup(pack){if(pack?.schemaVersion===1)return pack;/* v2 conversion belongs here once a v2 schema is defined. Never guess future formats. */if(pack?.schemaVersion===2)throw Error('This backup needs a newer Khatti version.');throw Error('Unsupported progress schema.');}
 export const TRANSFER_LIMIT=12*1024*1024;
 const transferKeys=new Set(['harf.creative.v1','harf.creative.cursor.v1','harf.connected.v1','harf.name-practice.v1','harf.name-practice.tools.v1','harf.names.v1','harf.my-work.v1','harf.free-canvas.v1','harf.poster-options.v1','harf.ayah-studio.v1','harf.ayah-collection.v1','harf.intros.v1','harf.intros.auto.v1','harf.chapter3.v1','khatti.loop.v2','khatti.drills.v1','khatti.atelier.v1','khatti.tutorial.v1','khatti_path_progress']);
