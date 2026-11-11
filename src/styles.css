@@ -1119,3 +1119,19 @@ html.is-app [data-pwa-options]{display:none!important}
 .wk-device a.textbtn{font-size:.78rem;color:#6a5328;text-decoration:underline;text-underline-offset:3px}
 #scribe-path .sp-sep>span{text-align:center}
 #scribe-path .sp-sep small{display:block;margin-top:4px;font:italic .82rem Georgia,serif;letter-spacing:0;text-transform:none;color:#6a5328}
+/* Language toggle (EN / عربي) */
+.kl-toggle{background:none;border:1px solid rgba(184,137,43,.55);border-radius:99px;padding:5px 12px;font:600 .8rem/1 system-ui,sans-serif;color:#6e1414;cursor:pointer;white-space:nowrap}
+.kl-toggle[lang=ar]{font:600 .95rem/1 'HarfNaskh','Noto Naskh Arabic',serif;padding:4px 12px 6px}
+.creative-header .kl-toggle{margin-inline-start:auto;margin-inline-end:4px}
+.creative-header .kl-toggle~.creative-mywork{margin-left:0;margin-inline-start:0}
+.ki-top{display:flex;justify-content:space-between;align-items:center}
+.ki-top .ki-skip{justify-self:auto}
+/* Arabic mode */
+html[lang=ar] body{font-family:'Noto Naskh Arabic','Geeza Pro','Segoe UI',Tahoma,sans-serif}
+html[dir=rtl] .sp-topbar,html[dir=rtl] .loop-top{direction:rtl}
+html[dir=rtl] .nb-loop-card,html[dir=rtl] .wk-device{text-align:right}
+html[dir=rtl] .nb-loop-card>span:last-child{transform:scaleX(-1)}
+html[dir=rtl] .creative-studio,html[dir=rtl] #my-work,html[dir=rtl] .my-work,html[dir=rtl] .connected-studio,html[dir=rtl] #app{direction:rtl!important}
+html[dir=rtl] canvas,html[dir=rtl] .nb-sheet,html[dir=rtl] .connected-studio .immersive-paper{direction:ltr}
+html[lang=ar] #scribe-path .sp-title h2{display:none}
+html[lang=ar] .sp-tstat,html[lang=ar] .sp-tstat span{unicode-bidi:plaintext}

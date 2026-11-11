@@ -1,0 +1,26 @@
+// v6.53: English / Arabic switch. Arabic mode is RTL and leaves no stray English on the main screens.
+const {chromium}=require('playwright');const assert=require('assert');const path=require('path');
+(async()=>{const server=require('child_process').spawn(process.execPath,[path.join(__dirname,'../scripts/serve.mjs')]);await new Promise(r=>server.stdout.once('data',r));const base='http://127.0.0.1:'+(process.env.PORT||4173);
+const b=await chromium.launch();const ctx=await b.newContext({viewport:{width:390,height:844}});const errs=[];
+await ctx.addInitScript(()=>{localStorage.setItem('harf.intros.auto.v1','false');localStorage.setItem('khatti.goal.v1','{"version":1,"goal":"hand"}');});
+const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));
+const english=()=>p.evaluate(()=>{const bad=[];const ok=/^(English|QariAI|· من QariAI|Enter)$/;const vis=e=>{const s=getComputedStyle(e);return s.display!=='none'&&s.visibility!=='hidden'&&e.getClientRects().length};
+ const w=document.createTreeWalker(document.body,4);let n;while(n=w.nextNode()){const t=n.nodeValue.trim();const el=n.parentElement;if(!t||!el||/SCRIPT|STYLE/.test(el.tagName)||!vis(el))continue;if(/[A-Za-z]{2,}/.test(t)&&!ok.test(t)&&!/QariAI/.test(t))bad.push(t);}return bad;});
+await p.goto(base+'/dist/Harf-Writer-v5-Complete-Ayahs.html');await p.waitForSelector('.creative-header [data-kl-toggle]');
+assert.equal(await p.evaluate(()=>document.documentElement.dir),'ltr');assert.equal(await p.locator('[data-kl-toggle]').innerText(),'عربي');
+await p.click('[data-kl-toggle]');await p.waitForLoadState('load');await p.waitForSelector('.creative-header [data-kl-toggle]');await p.waitForTimeout(300);
+assert.equal(await p.evaluate(()=>document.documentElement.lang+' '+document.documentElement.dir),'ar rtl','Arabic mode is RTL');
+assert.equal(await p.locator('[data-kl-toggle]').innerText(),'English');
+assert.deepEqual(await english(),[],'no English left on Home');
+await p.evaluate(()=>window.dispatchEvent(new Event('khatti:open-path')));await p.waitForSelector('#scribe-path',{state:'visible'});await p.waitForTimeout(200);
+assert.deepEqual(await english(),[],'no English left on the Path');
+assert.equal(await p.locator('[data-sp-item="t1-2"] .sp-en').innerText(),'باء');
+await p.click('[data-sp-item="t1-2"]');await p.waitForSelector('#scribe-practice');await p.waitForTimeout(200);
+assert.deepEqual(await english(),[],'no English left in practice');
+await p.locator('.sp-x').first().click();await p.waitForTimeout(300);await p.click('[data-sp-nav="work"]');await p.waitForSelector('#my-work');await p.waitForTimeout(200);
+assert.deepEqual(await english(),[],'no English left in My work');
+await p.click('[data-work="close"]');await p.waitForTimeout(300);await p.click('.nb-loop-card');await p.waitForTimeout(1200);
+assert.equal(await p.frameLocator('#loop-frame').locator('#lvl').innerText(),'المستوى 1','Loop is translated');
+await p.click('.loop-back');await p.waitForSelector('.creative-header [data-kl-toggle]');await p.click('[data-kl-toggle]');await p.waitForLoadState('load');await p.waitForSelector('.creative-header [data-kl-toggle]');
+assert.equal(await p.evaluate(()=>document.documentElement.lang+' '+document.documentElement.dir),'en ltr','back to English');
+assert.deepEqual(errs,[]);console.log('lang ok');await b.close();server.kill();})().catch(e=>{console.error(e);process.exit(1)});
