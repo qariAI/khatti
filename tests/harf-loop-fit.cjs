@@ -20,6 +20,21 @@ for(const [w,h] of [[390,844],[360,640],[1280,720]])for(const lang of ['en','ar'
    return {scroll:m.scrollHeight-m.clientHeight,doc:document.documentElement.scrollHeight-v,out};});
   assert(r.scroll<=1&&r.doc<=1,'no inner scroll '+label+' '+JSON.stringify(r));assert.deepEqual(r.out,[],'everything visible '+label);};
  await check('before solve '+tag);
+ // pickers never truncate their text
+ const trunc=await fr.evaluate(()=>['chapter','level'].map(id=>{const s=document.getElementById(id),cs=getComputedStyle(s),sp=document.createElement('span');sp.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:'+cs.font;sp.textContent=s.options[s.selectedIndex].text;document.body.append(sp);const tw=sp.getBoundingClientRect().width;sp.remove();return {id,text:s.options[s.selectedIndex].text,tw,room:s.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)-20,sw:s.scrollWidth,cw:s.clientWidth};}));
+ for(const r of trunc){assert(r.sw<=r.cw,'picker scrollWidth '+tag+JSON.stringify(r));assert(r.tw<=r.room,'picker text fits '+tag+JSON.stringify(r));}
+ const ib=await fr.evaluate(()=>['daily','collection'].map(id=>{const b=document.getElementById(id).getBoundingClientRect(),e=document.getElementById(id);return [Math.round(b.width),Math.round(b.height),!!e.getAttribute('aria-label'),!!e.title];}));
+ assert.deepEqual(ib,[[40,40,true,true],[40,40,true,true]],'icon buttons '+tag);
+ if(process.env.SHOTS&&w!==1280)await p.screenshot({clip:{x:0,y:44,width:w,height:70},path:path.join(process.env.SHOTS,'pickers-'+w+'-'+lang+'.png')});
+ if(w<=390)for(const id of [179,176]){
+  await fr.evaluate(async i=>{await load(i);},id);await fr.waitForFunction(()=>ready);await p.waitForTimeout(300);
+  const m=await fr.evaluate(()=>({n:active.w+'x'+active.h,tiles:[...document.querySelectorAll('#board .tile')].map(e=>e.getBoundingClientRect().width),scroll:document.querySelector('main').scrollHeight-document.querySelector('main').clientHeight}));
+  assert(m.tiles.length>0&&Math.min(...m.tiles)>=33.5,'master tiles >=34px '+tag+' '+id+' '+m.n+' min '+Math.min(...m.tiles));
+  assert.equal(await fr.locator('#board').evaluate(e=>e.getBoundingClientRect().right<=innerWidth+1),true,'board inside width '+tag);
+  if(process.env.SHOTS&&id===179)await p.screenshot({path:path.join(process.env.SHOTS,'master34-'+w+'x'+h+'-'+lang+'.png')});
+  if(id===179&&m.n!=='9x10')throw new Error('unexpected master 34 size '+m.n);
+ }
+ if(w<=390)await fr.evaluate(async()=>{await load(0);});await fr.waitForFunction(()=>ready);
  if(process.env.SHOTS&&(h!==640))await p.screenshot({path:path.join(process.env.SHOTS,'fit-'+w+'x'+h+'-'+lang+'.png')});
  await solve(fr);await fr.locator('#write').waitFor({state:'visible'});await p.waitForTimeout(600);
  assert(await fr.locator('#next').isVisible()||true);await check('solved '+tag);

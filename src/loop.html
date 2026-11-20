@@ -78,7 +78,8 @@ html[lang="ar"] h1{font-family:system-ui,sans-serif;font-weight:600}
 [data-khatti-lang]:not([data-khatti-lang=""]) .journey{margin-bottom:8px;min-height:0}
 [data-khatti-lang]:not([data-khatti-lang=""]) .pickers{flex:1 1 100%;align-items:center}
 [data-khatti-lang]:not([data-khatti-lang=""]) .pickers .level{flex:1 1 0;width:auto;min-width:0}
-[data-khatti-lang]:not([data-khatti-lang=""]) .pickers .action{flex:0 0 auto;font-size:12px;min-height:34px;padding:5px 9px}
+[data-khatti-lang]:not([data-khatti-lang=""]) .pickers .action{flex:0 0 40px;width:40px;height:40px;min-height:40px;padding:0;justify-content:center;gap:0;font-size:14px;border-radius:12px}
+[data-khatti-lang]:not([data-khatti-lang=""]) .pickers .level{font-size:12px;padding:7px 4px;height:40px}
 [data-khatti-lang]:not([data-khatti-lang=""]) .dock{height:clamp(170px,calc(100svh - 405px),475px);padding:12px}
 [data-khatti-lang]:not([data-khatti-lang=""]) .dock.master-board{height:max(clamp(170px,calc(100svh - 405px),475px),calc(var(--master-board-ink-height) + 24px))}
 [data-khatti-lang]:not([data-khatti-lang=""]) .below{padding-top:10px}
@@ -841,9 +842,11 @@ let boardDate=null,unlockBanner=null,requested=state.current;
 function syncTop(){
   const lang=languageCodes.indexOf(state.lang),copy=extraText[lang];
   const streak=state.daily.streak;
-  $('daily').textContent=copy.daily+(streak>0?' · '+number(streak)+'🔥':'');
+  if(khatti){$('daily').textContent='☀'+(streak>0?' '+number(streak):'');$('daily').setAttribute('aria-label',copy.daily+(streak>0?' · '+number(streak):''));$('daily').title=copy.daily;}
+  else $('daily').textContent=copy.daily+(streak>0?' · '+number(streak)+'🔥':'');
   $('daily').setAttribute('aria-pressed',String(state.current===dailyID));
-  $('collection').textContent=copy.collection;
+  if(khatti){$('collection').textContent='▦';$('collection').setAttribute('aria-label',copy.collection);$('collection').title=copy.collection;}
+  else $('collection').textContent=copy.collection;
   $('finish-back').textContent=results[state.lang].back;
 }
 function renderPickers(lang,copy,l){
@@ -859,7 +862,7 @@ function renderPickers(lang,copy,l){
     const stats=chapterStats(chapter,master);
     const lock=!master&&!state.chapters.includes(chapter)?' · '+copy.locked(number(missingStars(chapter))):'';
     opt.value=i;
-    opt.textContent=chapterName(i,lang)+' · '+number(stats.stars)+'/'+number(stats.size*3)+' ★'+lock;
+    opt.textContent=khatti&&innerWidth<=380?chapterName(i,lang)+' · '+number(stats.stars)+'★'+lock:chapterName(i,lang)+' · '+number(stats.stars)+'/'+number(stats.size*3)+' ★'+lock;
     modeGroups[master?1:0].append(opt);
   }
   picker.replaceChildren(...modeGroups);
@@ -933,10 +936,15 @@ function localize(){
 
 function fitBoard(){
   if (!active) return;
+  dock.style.height='';
   const styles=getComputedStyle(dock);
   const width=dock.clientWidth-2*parseFloat(styles.paddingLeft);
   const height=dock.clientHeight-2*parseFloat(styles.paddingTop);
-  const size=Math.max(1, Math.floor(Math.min(width/active.w,height/active.h,110)));
+  const MIN_TILE=34;
+  const size=Math.max(MIN_TILE, Math.floor(Math.min(width/active.w,height/active.h,110)));
+  // 34px tiles don't fit the dock (tall boards on short screens): grow the dock; the play view then scrolls
+  const need=size*active.h+2*parseFloat(styles.paddingTop);
+  if(need>dock.clientHeight+0.5)dock.style.height=Math.ceil(need)+'px';
   board.style.gridTemplateColumns=`repeat(${active.w},${size}px)`;
   board.style.gridTemplateRows=`repeat(${active.h},${size}px)`;
 }
@@ -1229,6 +1237,7 @@ function watchDay(){
   },Math.max(1000,+midnight-Date.now()+50));
 }
 new ResizeObserver(fitBoard).observe(dock);
+let narrowLabels=innerWidth<=380;addEventListener('resize',()=>{const n=innerWidth<=380;if(khatti&&n!==narrowLabels){narrowLabels=n;localize();}});
 localize();
 load(isUnlocked(state.current)?state.current:0);
 watchDay();
