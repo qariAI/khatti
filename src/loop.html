@@ -71,6 +71,17 @@ html[lang="ar"] h1{font-family:system-ui,sans-serif;font-weight:600}
 .top-controls{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap;min-width:0}
 .top-controls .action{font-size:13px;min-height:36px;padding:6px 10px}
 [data-khatti-lang]:not([data-khatti-lang=""]) .top{justify-content:flex-end}
+[data-khatti-lang]:not([data-khatti-lang=""]),
+[data-khatti-lang]:not([data-khatti-lang=""]) body{height:100svh;overflow:hidden}
+[data-khatti-lang]:not([data-khatti-lang=""]) .top{display:none}
+[data-khatti-lang]:not([data-khatti-lang=""]) main{height:100svh;box-sizing:border-box;overflow-y:auto;padding-top:10px;padding-bottom:10px}
+[data-khatti-lang]:not([data-khatti-lang=""]) .journey{margin-bottom:8px;min-height:0}
+[data-khatti-lang]:not([data-khatti-lang=""]) .pickers{flex:1 1 100%;align-items:center}
+[data-khatti-lang]:not([data-khatti-lang=""]) .pickers .level{flex:1 1 0;width:auto;min-width:0}
+[data-khatti-lang]:not([data-khatti-lang=""]) .pickers .action{flex:0 0 auto;font-size:12px;min-height:34px;padding:5px 9px}
+[data-khatti-lang]:not([data-khatti-lang=""]) .dock{height:clamp(170px,calc(100svh - 405px),475px);padding:12px}
+[data-khatti-lang]:not([data-khatti-lang=""]) .dock.master-board{height:max(clamp(170px,calc(100svh - 405px),475px),calc(var(--master-board-ink-height) + 24px))}
+[data-khatti-lang]:not([data-khatti-lang=""]) .below{padding-top:10px}
 .journey{flex-wrap:wrap}
 .pickers{display:flex;gap:7px;flex:1 1 290px;min-width:0}
 .pickers .level{max-width:none;min-width:0;width:50%}
@@ -758,7 +769,7 @@ const levelPicker = $('level');
 const khatti = ['en','ar'].includes(document.documentElement.getAttribute('data-khatti-lang'));
 let state = restore();
 if (khatti) {
-  document.querySelector('.brand').hidden=true;
+  document.querySelector('.brand').hidden=true;document.querySelector('.pickers').append($('daily'),$('collection'));
   state.lang=document.documentElement.getAttribute('data-khatti-lang');
   try {
     const preference=localStorage.getItem('khatti.lang.v1');
