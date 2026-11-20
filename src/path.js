@@ -191,7 +191,7 @@ function spPracticeRun(item){
   '<div class="sp-acts"><button type="button" data-k="retry">Try again</button>'+(law?'<button type="button" class="gold" data-k="lawha">Claim Lawha ✦</button>':'')+(nx?'<button type="button" class="go" data-k="next">Next →</button>':'')+'<button type="button" data-k="close">Map</button></div></div>';
   (P.querySelector('.go')||P.querySelector('button')).focus();}
  function reset(){strokes=[];cur=null;res=null;peek=false;peeked=false;const pk=$('[data-k=peek]');if(pk)pk.setAttribute('aria-pressed','false');$('.sp-result').hidden=true;$('.sp-note').textContent=item.note;drawGhost();drawInk();}
- function close(){document.removeEventListener('keydown',kd);window.removeEventListener('resize',rs);ov.remove();spP=null;spSetDims(false);spRefresh();if(!spMap||spMap.hidden){try{if(history.state&&history.state.sp==='practice')history.replaceState({sp:'path'},'');}catch{}spShowMap();}}
+ function close(){document.removeEventListener('keydown',kd);window.removeEventListener('resize',rs);ov.remove();spP=null;spSetDims(false);spRefresh();if(window.__loopWrite){window.__loopWrite=0;try{history.replaceState({},'');}catch{}window.dispatchEvent(new Event('harf:loop'));return;}if(!spMap||spMap.hidden){try{if(history.state&&history.state.sp==='practice')history.replaceState({sp:'path'},'');}catch{}spShowMap();}}
  const rs=()=>{const portrait=window.innerHeight>window.innerWidth*1.15;if((portrait?640:1000)!==SP_W&&!strokes.length&&!res){close();spPracticeRun(item);}};window.addEventListener('resize',rs);
  const kd=e=>{if(e.key==='Escape'){close();}};document.addEventListener('keydown',kd);
  ov.addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(!b)return;const k=b.dataset.k;
@@ -268,3 +268,14 @@ window.addEventListener('popstate',e=>{if(window.__spSilentPop){window.__spSilen
  if(st!=='path'&&spMap&&!spMap.hidden)spHideMap();});
 
 document.addEventListener('click',e=>{const b=e.target.closest('[data-sp-goto]');if(!b)return;const n=b.dataset.spGoto;setTimeout(()=>{const t=document.querySelector('#scribe-path .sp-tier[data-tier="'+n+'"]');if(!t)return;t.scrollIntoView({block:'start',behavior:'smooth'});t.classList.add('sp-flash');setTimeout(()=>t.classList.remove('sp-flash'),1600);},120);});
+
+/* Harf Loop "Write it": same-origin message from the Loop frame -> close Loop, open Path practice for that letter; closing practice returns to Loop */
+const SP_ALPHABET='ابتثجحخدذرزسشصضطظعغفقكلمنهوي';
+window.addEventListener('message',e=>{
+ if(e.origin!==window.location.origin)return;
+ const d=e.data;if(!d||typeof d!=='object'||d.type!=='khatti-loop-write')return;
+ const letter=d.letter;if(typeof letter!=='string'||!SP_ALPHABET.includes(letter)||letter.length!==1)return;
+ const fr=document.getElementById('loop-frame');if(!fr||e.source!==fr.contentWindow)return;
+ const item=SP_TIERS[0].items.find(i=>i.title===letter);if(!item)return;
+ window.__loopWrite=1;try{if(history.state&&history.state.sp==='loop'){window.__spSilentPop=1;history.back();}}catch{}window.dispatchEvent(new Event('harf:lesson-library'));
+ setTimeout(()=>{spPractice(item.id);setTimeout(()=>{if(!spP)window.__loopWrite=0;},800);},200);});
