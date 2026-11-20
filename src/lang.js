@@ -134,7 +134,7 @@ function klWatch(doc,frame){
   .observe(doc.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:KL_ATTRS});
  if(!frame)klFrames(doc);}
 function klFrames(n){if(!n||!n.querySelectorAll)return;const fs=n.tagName==='IFRAME'?[n]:[...n.querySelectorAll('iframe')];
- for(const f of fs){const go=()=>{try{const d=f.contentDocument;if(d&&d.body)klWatch(d,true);}catch{}};go();f.addEventListener('load',()=>{try{f.contentDocument.__kl=0;}catch{}go();});}}
+ for(const f of fs){if(f.id==='loop-frame')continue;const go=()=>{try{const d=f.contentDocument;if(d&&d.body)klWatch(d,true);}catch{}};go();f.addEventListener('load',()=>{try{f.contentDocument.__kl=0;}catch{}go();});}}
 /* Language toggle: in the header and on the intro */
 function klToggleBtn(){const b=document.createElement('button');b.type='button';b.className='kl-toggle';b.dataset.klToggle='';b.lang=KL_LANG==='ar'?'en':'ar';
  b.textContent=KL_LANG==='ar'?'English':'عربي';b.setAttribute('aria-label',KL_LANG==='ar'?'Switch to English':'التبديل إلى العربية');return b;}
